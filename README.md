@@ -26,13 +26,36 @@ Environment variables:
 Demo login: `2026-0001` / `student123` (₱1,000 demo balance).
 
 ## Structure
+```text
+server.js                 Express entry point
+db/                      PostgreSQL connection, schema and setup
+   init.js
+   pool.js
+   schema.sql
+lib/                     Server-side authentication and helpers
+   auth.js
+   maintenance.js
+   util.js
+routes/                  API routes (auth, menu, orders, wallet)
+public/                  Browser-only files served by Express
+   index.html
+   login.html
+   orders.html
+   wallet.html
+   css/style.css
+   js/                    common, home, login, orders, wallet
+test/                    File-layout and authentication regression tests
 ```
-server.js            Express app (API + static frontend)
-routes/auth.js       register, login, logout, me, change password
-routes/menu.js       menu with live stock, today's pickup slots
-routes/orders.js     place order (wallet + stock in one transaction), cancel, confirm-now, QR
-routes/wallet.js     balance + transaction history
-db/                  schema + auto-setup (shared)
-lib/                 auth, helpers, auto lock-in / suspension sweeps (shared)
-public/              login.html, index.html (menu), orders.html, wallet.html, css, js
+
+Only `public/` is served to browsers. API route files and browser scripts have
+separate directories, even when they share a name (for example, `orders.js`).
+
+## Checks
+
+```bash
+npm test                  # no database connection required
+npm run db:init           # requires DATABASE_URL; creates schema and demo data
 ```
+
+`npm start` also initializes the database before listening. A reachable PostgreSQL
+database and `JWT_SECRET` are required for login and end-to-end testing.

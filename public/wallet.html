@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wallet · Canteen Pre-Order</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/"><span class="brand-dot"></span> Canteen</a>
+      <nav class="nav">
+        <a href="/index.html">Menu</a>
+        <a href="/orders.html">My Orders</a>
+        <a href="/wallet.html">Wallet</a>
+      </nav>
+      <span class="spacer"></span>
+      <button class="btn ghost sm" onclick="logout()">Log out</button>
+    </div>
+  </header>
+
+  <main class="container stack">
+    <section class="grid grid-2">
+      <div class="wallet-card">
+        <div class="label">Wallet balance</div>
+        <div class="amount" id="balance">₱0.00</div>
+        <div class="label" id="who"></div>
+      </div>
+      <div class="glass-card">
+        <h3>How to top up</h3>
+        <p class="muted" style="margin:0">
+          Go to the <b>school cashier</b>, give your School ID and pay in cash.
+          The cashier loads the amount into your wallet right away and gives you a receipt number.
+          The canteen counter <b>cannot</b> add money to wallets.
+        </p>
+      </div>
+    </section>
+
+    <section class="glass-card">
+      <div class="row between" style="margin-bottom:8px">
+        <h2 style="margin:0">Transaction history</h2>
+        <button class="btn secondary sm" id="changePw">Change password</button>
+      </div>
+      <div class="table-wrap" id="txns"></div>
+    </section>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/wallet.js"></script>
+</body>
+</html>
