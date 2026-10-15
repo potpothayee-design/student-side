@@ -1,5 +1,6 @@
-// Canteen Pre-Order System: BACK-OFFICE APP (Staff, School Cashier, Admin)
-// One app, three roles: the account's role decides which screen it opens.
+// Canteen Pre-Order System: STUDENT APP
+// Students register/login, browse the menu, order and pay from their wallet or cash at pickup,
+// cancel within the window or "Confirm Now", track status and view wallet history.
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
@@ -11,9 +12,10 @@ const { sweepMiddleware, startSweepTimer } = require('./lib/maintenance');
 
 const app = express();
 app.set('trust proxy', 1); // Render runs behind a proxy (needed for secure cookies)
-app.use(express.json({ limit: '1mb' })); // menu photos are resized in the browser first
+app.use(express.json({ limit: '100kb' }));
 app.use(cookieParser());
 
+// Health check for Render
 app.get('/healthz', async (req, res) => {
   try { await pool.query('SELECT 1'); res.json({ ok: true }); }
   catch { res.status(500).json({ ok: false }); }
@@ -27,22 +29,22 @@ app.use('/api', (req, res, next) => {
 });
 app.use('/api', sweepMiddleware);
 app.use('/api/auth', require('./routes/auth'));
-app.use('/api/students', require('./routes/students').router);
-app.use('/api/staff', require('./routes/staff'));
-app.use('/api/cashier', require('./routes/cashier'));
-app.use('/api/admin', require('./routes/admin'));
+app.use('/api', require('./routes/menu'));
+app.use('/api/orders', require('./routes/orders'));
+app.use('/api/wallet', require('./routes/wallet'));
 app.use('/api', (req, res) => res.status(404).json({ error: 'Not found' }));
 
+// Frontend (static HTML/CSS/JS)
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 // Open the port FIRST so Render detects the service right away,
 // then set up the database (retrying if the database is slow or still waking up).
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Back-office app running on port ${PORT}`);
+  console.log(`Student app running on port ${PORT}`);
   setupDatabase();
 });
 
