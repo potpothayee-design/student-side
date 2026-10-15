@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in · Canteen Pre-Order</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <main class="center-page">
+    <div class="glass-card" style="width:100%;max-width:420px">
+      <div class="brand" style="margin-bottom:6px"><span class="brand-dot"></span> Canteen Pre-Order</div>
+      <p class="muted" style="margin-bottom:18px">Order ahead, pay from your wallet, skip the line.</p>
+
+      <div class="tabs" role="tablist">
+        <button class="active" data-tab="login" type="button">Log in</button>
+        <button data-tab="register" type="button">Register</button>
+      </div>
+
+      <div id="msg"></div>
+
+      <form id="loginForm" autocomplete="on">
+        <div class="field">
+          <label for="loginId">School ID</label>
+          <input id="loginId" name="login_id" placeholder="e.g. 2026-0001" required autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="loginPw">Password</label>
+          <input id="loginPw" name="password" type="password" required autocomplete="current-password" />
+        </div>
+        <button class="btn block" type="submit">Log in</button>
+      </form>
+
+      <form id="registerForm" class="hidden" autocomplete="on">
+        <div class="field">
+          <label for="regId">School ID</label>
+          <input id="regId" name="school_id" placeholder="e.g. 2026-0123" required autocomplete="username" />
+        </div>
+        <div class="field">
+          <label for="regName">Full name</label>
+          <input id="regName" name="full_name" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="regPw">Password (min. 6 characters)</label>
+          <input id="regPw" name="password" type="password" minlength="6" required autocomplete="new-password" />
+        </div>
+        <div class="field">
+          <label for="regPw2">Confirm password</label>
+          <input id="regPw2" type="password" minlength="6" required autocomplete="new-password" />
+        </div>
+        <button class="btn block" type="submit">Create account</button>
+        <p class="muted" style="font-size:0.82rem;margin-top:12px">
+          New accounts start at ₱0.00. Top up your wallet with cash at the <b>school cashier</b>.
+        </p>
+      </form>
+
+      <div class="divider"></div>
+      <p class="muted" style="font-size:0.8rem;margin:0">
+        Demo account (presentation only): <span class="mono">2026-0001</span> / <span class="mono">student123</span>
+      </p>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script>
+    const msg = $('#msg');
+    $$('.tabs button').forEach((b) => b.addEventListener('click', () => {
+      $$('.tabs button').forEach((x) => x.classList.toggle('active', x === b));
+      $('#loginForm').classList.toggle('hidden', b.dataset.tab !== 'login');
+      $('#registerForm').classList.toggle('hidden', b.dataset.tab !== 'register');
+      showError(msg, '');
+    }));
+
+    // Already logged in? Go to home.
+    api('/api/auth/me', { noRedirect: true }).then(() => (location.href = '/')).catch(() => {});
+
+    $('#loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = e.submitter;
+      withBusy(btn, async () => {
+        try {
+          await api('/api/auth/login', { method: 'POST', body: { login_id: $('#loginId').value, password: $('#loginPw').value }, noRedirect: true });
+          location.href = '/';
+        } catch (err) { showError(msg, err.message); }
+      });
+    });
+
+    $('#registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if ($('#regPw').value !== $('#regPw2').value) return showError(msg, 'Passwords do not match.');
+      const btn = e.submitter;
+      withBusy(btn, async () => {
+        try {
+          await api('/api/auth/register', {
+            method: 'POST', noRedirect: true,
+            body: { school_id: $('#regId').value, full_name: $('#regName').value, password: $('#regPw').value },
+          });
+          location.href = '/';
+        } catch (err) { showError(msg, err.message); }
+      });
+    });
+  </script>
+</body>
+</html>

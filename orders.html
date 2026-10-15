@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Orders · Canteen Pre-Order</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/"><span class="brand-dot"></span> Canteen</a>
+      <nav class="nav">
+        <a href="/index.html">Menu</a>
+        <a href="/orders.html">My Orders</a>
+        <a href="/wallet.html">Wallet</a>
+      </nav>
+      <span class="spacer"></span>
+      <button class="btn ghost sm" onclick="logout()">Log out</button>
+    </div>
+  </header>
+
+  <main class="container stack">
+    <div id="newAlert"></div>
+    <section class="stack">
+      <h2>Active orders</h2>
+      <div id="activeList" class="grid grid-2"></div>
+    </section>
+    <section class="stack">
+      <h2>Order history</h2>
+      <div class="glass-card table-wrap" id="historyList"></div>
+    </section>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/orders.js"></script>
+</body>
+</html>
