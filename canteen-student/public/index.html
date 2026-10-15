@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu · Canteen Pre-Order</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/"><span class="brand-dot"></span> Canteen</a>
+      <nav class="nav">
+        <a href="/index.html">Menu</a>
+        <a href="/orders.html">My Orders</a>
+        <a href="/wallet.html">Wallet</a>
+      </nav>
+      <span class="spacer"></span>
+      <span class="user-chip hide-mobile" id="userName"></span>
+      <button class="btn ghost sm" onclick="logout()">Log out</button>
+    </div>
+  </header>
+
+  <main class="container stack">
+    <section class="grid grid-2">
+      <div class="wallet-card">
+        <div class="label">Wallet balance</div>
+        <div class="amount" id="balance">₱0.00</div>
+        <div class="label" id="walletHint">Top up with cash at the school cashier.</div>
+      </div>
+      <div class="glass-card" id="statusCard">
+        <h3>Hello!</h3>
+        <p class="muted">Pick your food, choose a pickup slot, and pay from your wallet.</p>
+      </div>
+    </section>
+
+    <div id="suspendedAlert"></div>
+
+    <section class="stack">
+      <div class="row between">
+        <h2 style="margin:0">Today's menu</h2>
+        <div class="chips" id="categoryChips"></div>
+      </div>
+      <div id="menuGrid" class="menu-grid"></div>
+    </section>
+  </main>
+
+  <div class="cart-bar glass hidden" id="cartBar">
+    <div>
+      <div style="font-weight:600" id="cartCount">0 items</div>
+      <div class="muted" style="font-size:0.85rem" id="cartTotal">₱0.00</div>
+    </div>
+    <span class="spacer"></span>
+    <button class="btn secondary sm" id="clearCart" type="button">Clear</button>
+    <button class="btn" id="checkoutBtn" type="button">Checkout</button>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/home.js"></script>
+</body>
+</html>
